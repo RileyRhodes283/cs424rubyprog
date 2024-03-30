@@ -10,10 +10,13 @@ class Athlete
     def initialize(id, name)
         @playerId = id
         @playerName = name
+        @eventsPresentId = ""
+        @eventsPresentName = Array.new
     end 
     def printer()
-        puts "The player ID number is #@playerId\n"
+        puts "\nThe player ID number is #@playerId\n"
         puts "The player's name is #@playerName\n"
+        puts "The player is at this event #@eventsPresentName\n"
     end
     def getId()
         return @playerId
@@ -21,16 +24,30 @@ class Athlete
     def getName()
         return @playerName
     end
+    def setEvent(input)
+        @eventsPresentId = @eventsPresentId + input + " "
+    end
+    def setEventName(input)
+        @eventsPresentName.push(input)
+    end
+    def getEventPresentName()
+        return @eventsPresentName
+    end
+    def getPlayerEvent()
+        return @eventsPresentId
+    end
 end
 
 class Events
     def initialize(id, name)
         @eventId = id
         @eventName = name
+        @playersPresent = Array.new
     end 
     def printer()
-        puts "The event ID number is #@eventId\n"
+        puts "\nThe event ID number is #@eventId\n"
         puts "The event name is #@eventName\n"
+        puts "The players present are #@playersPresent"
     end
     def getId()
         return @eventId
@@ -38,56 +55,85 @@ class Events
     def getName()
         return @eventName
     end
+    def addPlayer(input)
+        @playersPresent.push(input)
+    end
 end
 
-x = 0
-y = Array.new
-z = Array.new
+counter = 0
+playerHandler = Array.new
+eventHandler = Array.new
+v = Array.new
 file = File.open("register.txt")
 a = file.readlines.map()
-puts a 
 a.each do |num|
     myarray = num.split(" ", 2)
     if myarray == [""]
-        x+=1
+        counter+=1
         next
     end
     myarray[1] = myarray[1].to_s.chomp()
-
-    case x 
+    case counter 
     when 0
         item = Athlete.new(myarray[0],myarray[1])
-        item.printer
-        y.push(item)
+        playerHandler.push(item)
     when 1
         item = Events.new(myarray[0],myarray[1])
-        item.printer
-        z.push(item)
-    when 2 
+        eventHandler.push(item)
+    when 2
+        v.push("#{myarray[0] +","+ myarray[1]}") 
         found = false
-        y.map{|foo|
+        playerHandler.map{|foo|
         if (myarray[0] == foo.getId)
-            puts "Player ID #{myarray[0]} found"
+            puts "\nPlayer ID #{myarray[0]} found"
             found = true
             break 
         end
         }
         if (found == false)
             puts "Player ID #{myarray[0]} wasn't found"
+            puts "String #{myarray} is deleted from events/player list}"
+            v.pop() # if its not found at all pop last item to prevent assigning error
         end
-        z.map{|bar|
-        #puts bar
-        if(myarray[1] == myarray[1])
-            puts "Event ID #{myarray[1]} found"
+        found = false
+        eventHandler.map{|bar|
+        if(myarray[1] == bar.getId)
+            puts "Event ID #{myarray[1]} found\n"
             found = true
             break
         end
         }
         if (found == false)
             puts "Event ID #{myarray[1]} wasn't found"
+            puts "String #{myarray} is deleted from events/player list}"
+            v.pop() # if its not found at all pop last item to prevent assigning error
         end
-
-
-
     end
+end
+v.each do |m| 
+    playerNum,eventNum = m.split(",", 2)
+
+    playerHandler.each do |finder|
+        if(finder.getId == playerNum)
+            finder.setEvent(eventNum)
+            eventHandler.each do |looker|
+                finderA = finder.getPlayerEvent.split(" ")
+                impo = finderA.pop()
+                if looker.getId == impo
+                finder.setEventName(looker.getName)
+                looker.addPlayer(finder.getName) 
+                break
+                end
+            end
+        end
+    end
+
+
+
+end
+playerHandler.each do |b|
+    b.printer
+end
+eventHandler.each do |c|
+    c.printer
 end
