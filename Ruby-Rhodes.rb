@@ -16,7 +16,7 @@ class Athlete
     def printer()
         puts "\nThe player ID number is #@playerId\n"
         puts "The player's name is #@playerName\n"
-        puts "The player is at this event #@eventsPresentName\n"
+        puts "The player is at this event #{getEvent()}\n"
     end
     def getId()
         return @playerId
@@ -36,6 +36,15 @@ class Athlete
     def getPlayerEvent()
         return @eventsPresentId
     end
+    def getEvent()
+        local = ""
+        for event in @eventsPresentName do
+            local = local +  event + ", "
+        end
+        local = local.slice(0,local.length()-2 )
+        local = local + "."
+        return local
+    end
 end
 
 class Events
@@ -47,13 +56,22 @@ class Events
     def printer()
         puts "\nThe event ID number is #@eventId\n"
         puts "The event name is #@eventName\n"
-        puts "The players present are #@playersPresent"
+        puts "The players present are #{getPlayers()}"
     end
     def getId()
         return @eventId
     end
     def getName()
         return @eventName
+    end
+    def getPlayers()
+        local = ""
+        for players in @playersPresent do
+            local = local +  players + ", "
+        end
+        local = local.slice(0,local.length()-2 )
+        local = local + "."
+        return local
     end
     def addPlayer(input)
         @playersPresent.push(input)
@@ -67,7 +85,7 @@ v = Array.new
 file = File.open("register.txt")
 a = file.readlines.map()
 a.each do |num|
-    myarray = num.split(" ", 2)
+    myarray = num.split(nil, 2)
     if myarray == [""]
         counter+=1
         next
