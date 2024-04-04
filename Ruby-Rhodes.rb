@@ -129,7 +129,7 @@ a.each do |num| # num is each line
         }
         if (found == false) # if not found pop element out of line holder, cause line is incorrect
             puts "Player ID #{myarray[0]} wasn't found"
-            puts "String #{myarray} is deleted from events/player list}"
+            puts "String #{myarray} is deleted from events/player list"
             lineHolder.pop() # if its not found at all pop last item to prevent assigning error
         end
         found = false
@@ -142,7 +142,7 @@ a.each do |num| # num is each line
         }
         if (found == false)# if not found pop element out of line holder, cause line is incorrect
             puts "Event ID #{myarray[1]} wasn't found"
-            puts "String #{myarray} is deleted from events/player list}"
+            puts "String #{myarray} is deleted from events/player list"
             lineHolder.pop() # if its not found at all pop last item to prevent assigning error
         end
     end
